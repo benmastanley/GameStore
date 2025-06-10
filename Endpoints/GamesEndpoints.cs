@@ -16,18 +16,20 @@ namespace GameStore.Api.Endpoints
         ];
 
 
-        public static WebApplication MapGamesEndpoints(this WebApplication app)
+        public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
         {
+            var group = app.MapGroup("/games").WithParameterValidation();
+
             // Configure the HTTP request pipeline
             // GET endpoint to retrieve all games
-            app.MapGet("/games", () => games);
+            group.MapGet("/", () => games);
 
             // GET endpoint to retrieve a single game by id
-            app.MapGet("/games/{id}", (int id) => games.Find(g => g.id == id))
+            group.MapGet("/{id}", (int id) => games.Find(g => g.id == id))
                 .WithName(GetGameEndpointName);
 
             // POST endpoint to create a new game
-            app.MapPost("/games", (CreateGameDto createGameDto) =>
+            group.MapPost("/", (CreateGameDto createGameDto) =>
             {
                 var newGame = new GameDto(
                     id: games.Count + 1,
@@ -41,7 +43,7 @@ namespace GameStore.Api.Endpoints
             });
 
             // PUT endpoint to update an existing game
-            app.MapPut("/games/{id}", (int id, UpdateGameDto updateGameDto) =>
+            group.MapPut("/{id}", (int id, UpdateGameDto updateGameDto) =>
             {
                 var game = games.Find(g => g.id == id);
                 if (game == null)
@@ -63,7 +65,7 @@ namespace GameStore.Api.Endpoints
             });
 
             // DELETE endpoint to remove a game by id
-            app.MapDelete("/games/{id}", (int id) =>
+            group.MapDelete("/{id}", (int id) =>
             {
                 var game = games.Find(g => g.id == id);
                 if (game == null)
@@ -76,7 +78,7 @@ namespace GameStore.Api.Endpoints
                 return Results.NoContent();
             });
 
-            return app;
+            return group;
         }
     }
 }

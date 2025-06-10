@@ -1,4 +1,6 @@
+using GameStore.Api.Context;
 using GameStore.Api.Endpoints;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 // Create a WebApplication builder instance
@@ -15,8 +17,18 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddDbContext<GameStoreContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 // Build the WebApplication
 var app = builder.Build();
+
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
 
 // Enable Swagger middleware for API documentation (available in all environments)
 app.UseSwagger();
