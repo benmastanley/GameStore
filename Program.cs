@@ -38,6 +38,7 @@ app.UseSwaggerUI(options =>
 });
 
 app.MapGamesEndpoints();
+app.MapGenresEndpoints();
 
 // Start the application
 app.Run();

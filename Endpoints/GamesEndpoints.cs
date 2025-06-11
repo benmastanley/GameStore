@@ -18,24 +18,26 @@ namespace GameStore.Api.Endpoints
 
             // Configure the HTTP request pipeline
             // GET endpoint to retrieve all games
-            group.MapGet("/", (GameStoreContext dbContext) => dbContext.Games
+            group.MapGet("/", async (GameStoreContext dbContext) =>  
+                await dbContext.Games
                 .Include(g => g.Genre)
                 .Select(g => g.ToGameSummaryDto())
-                .AsNoTracking());
+                .AsNoTracking()
+                .ToListAsync());
 
             // GET endpoint to retrieve a single game by id
-            group.MapGet("/{id}", (int id, GameStoreContext dbContext) =>
+            group.MapGet("/{id}", async (int id, GameStoreContext dbContext) =>
             {
-                var game = dbContext.Games.Find(id);
+                var game = await dbContext.Games.FindAsync(id);
                 return game != null ? Results.Ok(game.ToGameDetailsDto()) : Results.NotFound();
             }).WithName(GetGameEndpointName);
 
             // POST endpoint to create a new game
-            group.MapPost("/", (CreateGameDto createGameDto, GameStoreContext dbContext) =>
+            group.MapPost("/", async (CreateGameDto createGameDto, GameStoreContext dbContext) =>
             {
                 Game game = createGameDto.ToEntity();
-                dbContext.Games.Add(game);
-                dbContext.SaveChanges();
+                await dbContext.Games.AddAsync(game);
+                await dbContext.SaveChangesAsync();
 
                 var gameDto = game.ToGameSummaryDto();
 
@@ -44,9 +46,9 @@ namespace GameStore.Api.Endpoints
             });
 
             // PUT endpoint to update an existing game
-            group.MapPut("/{id}", (int id, UpdateGameDto updateGameDto, GameStoreContext dbContext) =>
+            group.MapPut("/{id}", async (int id, UpdateGameDto updateGameDto, GameStoreContext dbContext) =>
             {
-                var existingGame = dbContext.Games.FirstOrDefault(g => g.Id == id);
+                var existingGame = await dbContext.Games.FirstOrDefaultAsync(g => g.Id == id);
                 if (existingGame == null)
                 {
                     // Returns 404 Not Found if the game does not exist
@@ -54,13 +56,13 @@ namespace GameStore.Api.Endpoints
                 }
 
                 dbContext.Entry(existingGame).CurrentValues.SetValues(updateGameDto.ToEntity(id));
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
                  
                 return Results.NoContent();
             });
 
             // DELETE endpoint to remove a game by id
-            group.MapDelete("/{id}", (int id, GameStoreContext dbContext) =>
+            group.MapDelete("/{id}", async (int id, GameStoreContext dbContext) =>
             {
                 var game = dbContext.Games.FirstOrDefault(g => g.Id == id);
                 if (game == null)
@@ -69,7 +71,7 @@ namespace GameStore.Api.Endpoints
                     return Results.NotFound();
                 }
                 dbContext.Remove(game);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
                 // Returns 204 No Content on successful deletion
                 return Results.NoContent();
             });

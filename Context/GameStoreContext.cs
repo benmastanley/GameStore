@@ -14,11 +14,11 @@ namespace GameStore.Api.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Game>().HasData(
-            //    new Game { Id = 1, Name = "The Legend of Zelda: Breath of the Wild", Price = 59.99m, ReleaseDate = new DateOnly(2017, 3, 3), GenreId = 1 },
-            //    new Game { Id = 2, Name = "Super Mario Odyssey", Price = 59.99m, ReleaseDate = new DateOnly(2017, 10, 27), GenreId = 1 },
-            //    new Game { Id = 3, Name = "Minecraft", Price = 26.95m, ReleaseDate = new DateOnly(2011, 11, 18), GenreId = 2 }
-            //);
+            modelBuilder.Entity<Game>().HasData(
+                new Game { Id = 1, Name = "The Legend of Zelda: Breath of the Wild", Price = 59.99m, ReleaseDate = new DateOnly(2017, 3, 3), GenreId = 1 },
+                new Game { Id = 2, Name = "Super Mario Odyssey", Price = 59.99m, ReleaseDate = new DateOnly(2017, 10, 27), GenreId = 1 },
+                new Game { Id = 3, Name = "Minecraft", Price = 26.95m, ReleaseDate = new DateOnly(2011, 11, 18), GenreId = 2 }
+            );
             modelBuilder.Entity<Genre>().HasData(
                 new Genre { Id = 1, Name = "Action" },
                 new Genre { Id = 2, Name = "Adventure" },
