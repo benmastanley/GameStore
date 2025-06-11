@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36121.58 d17.14
+# Blend for Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Api", "GameStore.Api.csproj", "{EF3DD1F8-4F71-4223-BFCA-BC0A0120A36E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Api", "GameStore.Api\GameStore.Api.csproj", "{EFBB7511-5220-172E-FE05-AA1321C715AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EF3DD1F8-4F71-4223-BFCA-BC0A0120A36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF3DD1F8-4F71-4223-BFCA-BC0A0120A36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF3DD1F8-4F71-4223-BFCA-BC0A0120A36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF3DD1F8-4F71-4223-BFCA-BC0A0120A36E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFBB7511-5220-172E-FE05-AA1321C715AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFBB7511-5220-172E-FE05-AA1321C715AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFBB7511-5220-172E-FE05-AA1321C715AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFBB7511-5220-172E-FE05-AA1321C715AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
