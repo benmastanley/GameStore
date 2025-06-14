@@ -34,10 +34,9 @@ namespace GameStore.Frontend.Clients
         
         public void AddGame(GameDetails game)
         {
-            ArgumentException.ThrowIfNullOrEmpty(game.GenreId);
-            var genre = genres.Single(x => x.Id == int.Parse(game.GenreId));
+            Genre genre = GetGenreById(game.GenreId);
 
-           var gameSummary = new GameSummary
+            var gameSummary = new GameSummary
             {
                 Id = games.Count + 1,
                 Name = game.Name,
@@ -45,8 +44,64 @@ namespace GameStore.Frontend.Clients
                 Price = game.Price,
                 ReleaseDate = game.ReleaseDate
             };
-             
+
             games.Add(gameSummary);
+        }
+
+
+        public GameDetails? GetGame(int id)
+        {
+            GameSummary game = GetGameSummaryById(id);
+
+            var genre = genres.Single(x => string.Equals(
+                x.Name,
+                game.Genre,
+                StringComparison.OrdinalIgnoreCase));
+
+            return new GameDetails
+            {
+                Id = game.Id,
+                Name = game.Name,
+                GenreId = genre.Id.ToString(),
+                Price = game.Price,
+                ReleaseDate = game.ReleaseDate
+            };
+        }
+
+        public void UpdateGame(GameDetails updatedGame)
+        {
+            //ArgumentNullException.ThrowIfNull(updatedGame);
+            //ArgumentException.ThrowIfNullOrEmpty(updatedGame.Name);
+            //ArgumentException.ThrowIfNullOrEmpty(updatedGame.GenreId);
+
+            Genre genre = GetGenreById(updatedGame.GenreId);
+            GameSummary existingGame = GetGameSummaryById(updatedGame.Id!.Value);
+
+            existingGame.Name = updatedGame.Name;
+            existingGame.Genre = genre.Name;
+            existingGame.Price = updatedGame.Price;
+            existingGame.ReleaseDate = updatedGame.ReleaseDate;
+        }
+
+        public void DeleteGame(int id)
+        {
+            GameSummary game = GetGameSummaryById(id);
+            games.Remove(game);
+        }
+
+
+        private GameSummary GetGameSummaryById(int id)
+        {
+            var game = games.SingleOrDefault(x => x.Id == id);
+            ArgumentNullException.ThrowIfNull(game);
+            return game;
+        }
+
+        private Genre GetGenreById(string? id)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(id);
+            var genre = genres.Single(x => x.Id == int.Parse(id));
+            return genre;
         }
     }
 
