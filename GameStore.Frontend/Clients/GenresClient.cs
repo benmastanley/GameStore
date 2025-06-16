@@ -1,33 +1,17 @@
 ﻿using GameStore.Frontend.Models;
+using System.Threading.Tasks;
 
 namespace GameStore.Frontend.Clients
 {
     public class GenresClient
     {
-        private readonly List<Genre> genres =
-        [
-            new(){
-                Id = 1,
-                 Name = "Fighting",
-            },
-            new (){
-                Id = 2,
-                Name = "Action-Adventure",
-            },
-            new (){
-                Id = 3,
-                Name = "Role-Playing",
-            },
-            new (){
-                Id = 4,
-                Name = "Shooter",
-            },
-            new (){
-                Id = 5,
-                Name = "Strategy",
-            },
-        ];
+        private readonly HttpClient _httpClient;
+        public GenresClient(HttpClient httpClient)
+        {
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        }
 
-        public Genre[] GetGenres() => [.. genres];
+        public async Task<Genre[]> GetGenres()
+            => await _httpClient.GetFromJsonAsync<Genre[]>("/genres") ?? [];
     }
 }

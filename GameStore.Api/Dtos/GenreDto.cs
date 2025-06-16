@@ -1,4 +1,4 @@
 ﻿namespace GameStore.Api.Dtos
 {
-    public record class GenreDto(int Id, string Name);
+    public record class GenreDto(string Id, string Name);
 }

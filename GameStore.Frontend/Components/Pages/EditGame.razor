@@ -61,12 +61,10 @@ else
     [SupplyParameterFromForm]
     private GameDetails? game { get; set; }
 
-    // private GenresClient genresClient = new GenresClient();
-    // private GamesClient gamesClient = new GamesClient();
     private Genre[]? genres;
     private string Title = string.Empty;
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         if (game is not null)
         {
@@ -74,7 +72,7 @@ else
         }
         if (Id.HasValue)
         {
-            game = GamesClient.GetGame(Id.Value);
+            game = await GamesClient.GetGame(Id.Value);
             Title = $"Edit {game.Name}";
         }
         else
@@ -88,21 +86,21 @@ else
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        genres = GenresClient.GetGenres();
+        genres = await GenresClient.GetGenres();
     }
 
-    private void HandleSubmit()
+    private async Task HandleSubmit()
     {
         ArgumentNullException.ThrowIfNull(game);
         if (Id is null)
         {
-            GamesClient.AddGame(game);
+            await GamesClient.AddGame(game);
         }
         else
         {
-            GamesClient.UpdateGame(game);
+            await GamesClient.UpdateGame(game);
         }
         NavigationManager.NavigateTo("/");
     }

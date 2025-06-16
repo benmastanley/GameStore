@@ -6,16 +6,14 @@ namespace GameStore.Api.Endpoints
 {
     public static class GenresEndpoints
     {
-        public static RouteGroupBuilder MapGenresEndpoints(this IEndpointRouteBuilder app)
+        public static RouteGroupBuilder MapGenresEndpoints(this WebApplication app)
         {
             var group = app.MapGroup("/genres");
             group.MapGet("/", async (GameStoreContext db) =>
-            {
                 await db.Genres
                     .Select(g => g.ToDto())
                     .AsNoTracking()
-                    .ToListAsync();
-            });
+                    .ToListAsync());
             return group;
         }
     }

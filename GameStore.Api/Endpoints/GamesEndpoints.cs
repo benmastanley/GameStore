@@ -38,7 +38,7 @@ namespace GameStore.Api.Endpoints
                 Game game = createGameDto.ToEntity();
                 await dbContext.Games.AddAsync(game);
                 await dbContext.SaveChangesAsync();
-
+                game.Genre = await dbContext.Genres.FirstOrDefaultAsync(x => x.Id == game.GenreId);
                 var gameDto = game.ToGameSummaryDto();
 
                 // Returns 201 Created with a Location header pointing to the new resource

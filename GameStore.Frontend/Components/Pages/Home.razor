@@ -58,7 +58,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         // Fetch the list of games from the API
-        games = Client.GetGames();
+        games = await Client.GetGames();
     }
 
     private static string GameUrl(int id)

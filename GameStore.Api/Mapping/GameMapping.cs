@@ -46,7 +46,7 @@ namespace GameStore.Api.Mapping
             return new GameDetailsDto(
                 game.Id,
                 game.Name,
-                game.GenreId,
+                game.GenreId.ToString(),
                 game.Price,
                 game.ReleaseDate);
         }
