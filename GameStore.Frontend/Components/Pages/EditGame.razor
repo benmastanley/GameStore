@@ -15,7 +15,7 @@
     <p>Loading...</p>
 }
 else
-{
+{   
     <EditForm Model="@game" FormName="editGame" OnValidSubmit="HandleSubmit" Enhance>
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -49,6 +49,10 @@ else
             <div class="form-group mt-3 mb-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <a role="button" class="btn btn-secondary" href="/">Cancel</a>
+                @if (Id is not null)
+                {
+                    <button type="button" class="btn btn-warning ms-2" @onclick="DuplicateGame">Duplicate</button>
+                }
             </div>
         </div>
     </EditForm>
@@ -102,6 +106,14 @@ else
         {
             await GamesClient.UpdateGame(game);
         }
+        NavigationManager.NavigateTo("/");
+    }
+
+    private async Task DuplicateGame()
+    {
+        ArgumentNullException.ThrowIfNull(game);
+        // Call your duplicate endpoint (assumed to be GamesClient.DuplicateGame)
+        await GamesClient.DuplicateGame(game.Id!.Value);
         NavigationManager.NavigateTo("/");
     }
 }

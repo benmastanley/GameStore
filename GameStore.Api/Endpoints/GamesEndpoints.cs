@@ -45,6 +45,35 @@ namespace GameStore.Api.Endpoints
                 return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, gameDto);
             });
 
+            // POST endpoint to duplicate a game
+            group.MapPost("/duplicate/{id}", async (int id, GameStoreContext dbContext) =>
+            {
+                var game = await dbContext.Games.FirstOrDefaultAsync(g => g.Id == id);
+                if (game == null)
+                {
+                    return Results.NotFound();
+                }
+
+                // Manually clone the game (excluding Id)
+                var newGame = new Game
+                {
+                    Name = $"{game.Name} - copy",
+                    Price = game.Price,
+                    ReleaseDate = game.ReleaseDate,
+                    GenreId = game.GenreId
+                };
+
+                await dbContext.Games.AddAsync(newGame);
+                await dbContext.SaveChangesAsync();
+
+                // Optionally load Genre for DTO mapping
+                newGame.Genre = await dbContext.Genres.FirstOrDefaultAsync(x => x.Id == newGame.GenreId);
+
+                var gameDto = newGame.ToGameSummaryDto();
+
+                return Results.CreatedAtRoute(GetGameEndpointName, new { id = newGame.Id }, gameDto);
+            });
+
             // PUT endpoint to update an existing game
             group.MapPut("/{id}", async (int id, UpdateGameDto updateGameDto, GameStoreContext dbContext) =>
             {

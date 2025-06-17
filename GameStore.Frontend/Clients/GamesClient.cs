@@ -18,7 +18,8 @@ namespace GameStore.Frontend.Clients
         public async Task AddGame(GameDetails game)
             => await _httpClient.PostAsJsonAsync("games", game);
 
-
+        public async Task DuplicateGame(int id) 
+            => await _httpClient.PostAsync($"games/duplicate/{id}", null);
         public async Task<GameDetails?> GetGame(int id)
             => await _httpClient.GetFromJsonAsync<GameDetails>($"games/{id}")
             ?? throw new Exception("Could not find game!");
