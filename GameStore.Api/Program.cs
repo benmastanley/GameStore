@@ -37,6 +37,13 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
 });
 
+// Apply migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
+    db.Database.Migrate();
+}
+
 app.MapGamesEndpoints();
 app.MapGenresEndpoints();
 
